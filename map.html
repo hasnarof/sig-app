@@ -12,6 +12,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
         integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
@@ -52,6 +53,12 @@
 
         .header {
             background: #1f2937;
+        }
+        #str {
+        font-size: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        
         }
 
         nav {
@@ -250,7 +257,11 @@
 
         </div>
     </section>
-  
+
+    <div id="row">
+        <div id="str" class="hero-content text-center"></div>
+      </div>
+
 
     <!--Map-->
     <div class="container" style="margin-top:50px;">
@@ -263,8 +274,48 @@
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
     </script>
     <script type="module" src="./bundle.js"></script>
+    <script>
+        var string =
+  "Welcome , Try click on the marker";
+var str = string.split("");
+var el = document.getElementById("str");
+(function animate() {
+  str.length > 0 ? (el.innerHTML += str.shift()) : clearTimeout(running);
+  var running = setTimeout(animate, 120);
+})();
+    </script>
 </body>
 
 
+  <!-- End of .container -->
+  <!--Footer-->
+  <!-- Remove the container if you want to extend the Footer to full width. -->
+<div style="margin-top: 50px;">
+
+    <footer class="text-center text-lg-start" style="background-color: #1f2937;">
+      <div class="container d-flex justify-content-center py-5">
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #1f2937;">
+          <i class="fa fa-facebook"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #1f2937;">
+          <i class="fa fa-youtube"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #1f2937;">
+          <i class="fa fa-instagram"></i>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg btn-floating mx-2" style="background-color: #1f2937;">
+          <i class="fa fa-twitter"></i>
+        </button>
+      </div>
+  
+      <!-- Copyright -->
+      <div class="text-center text-white p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2020 Copyright:
+        <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+    
+  </div>
   <!-- End of .container -->
 </html>
