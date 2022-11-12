@@ -22,12 +22,19 @@ if (!localStorage.coordinates) {
 let storageCoordinates = JSON.parse(localStorage.getItem("coordinates"));
 storageCoordinates.forEach((coordinate) => {
   if(coordinate.visited) {
-    $(`#list-visited-house`).append(`<li class="list-group-item">${coordinate.address}, ${coordinate.kec_desa}</li>`)
+    $(`#list-visited-house`).append(`<li class="list-group-item d-flex justify-content-between">
+      <span>${coordinate.address}, ${coordinate.kec_desa}</span>
+      <button id="btn-focus-${coordinate.id}" class="btn btn-primary">Focus</button>
+    </li>`)
+
+    $(`#btn-focus-${coordinate.id}`).click(() => {
+      map.flyTo([coordinate.lat, coordinate.lng], 18)
+    })
   }
 })
 
-coordinates.forEach((point, i) => {
-  markers[point.id] = L.marker(point, {icon: blueMarkerIcon}).addTo(map);
+storageCoordinates.forEach((point, i) => {
+  markers[point.id] = L.marker(point, {icon: point.visited ? greenMarkerIcon : blueMarkerIcon}).addTo(map);
   var popup = markers[point.id].bindPopup(
     `<p>${point.address}, ${point.kec_desa}</p>
     <button id="btn-${point.id}" "type="button" class="btn ${point.visited ? "btn-warning" : "btn-primary"}">${point.visited ? "Unvisit" : "Visit"}</button>`
@@ -46,8 +53,18 @@ coordinates.forEach((point, i) => {
       let visitedCoordinates = parsedCoordinates.filter((e) => e.visited == true)
       $(`#list-visited-house`).empty()
       visitedCoordinates.forEach(e => {
-        $(`#list-visited-house`).append(`<li class="list-group-item">${e.address}, ${e.kec_desa}</li>`)
+        $(`#list-visited-house`).append(`<li class="list-group-item d-flex justify-content-between">
+          <span>${e.address}, ${e.kec_desa}</span>
+          <button id="btn-focus-${e.id}" class="btn btn-primary">Focus</button>
+        </li>`)
+
+        $(`#btn-focus-${e.id}`).click(() => {
+          map.flyTo([e.lat, e.lng], 18)
+        })
       })
+
+      
+      
 
       e.target.setIcon(parsedCoordinates[point.id].visited ? greenMarkerIcon : blueMarkerIcon);
 
@@ -56,6 +73,8 @@ coordinates.forEach((point, i) => {
         `<p>${point.address}, ${point.kec_desa}</p>
         <button id="btn-${point.id}" "type="button" class="btn ${parsedCoordinates[point.id].visited ? "btn-warning" : "btn-primary"}">${parsedCoordinates[point.id].visited ? "Unvisit" : "Visit"}</button>`
       )
+
+      
     })
   });
 });
