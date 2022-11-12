@@ -8,44 +8,46 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-let testmarker = [];
-var plainMarkerIcon = new L.icon({
-  iconUrl: "./resources/icons/marker-plain.png"
-});
-var redMarkerIcon = new L.icon({
-  iconUrl: "./resources/icons/marker-red.png"
-});
-var blueMarkerIcon = L.divIcon({
+let markers = [];
+let blueMarkerIcon = L.divIcon({
   className: 'blue-marker'
 });
-var greenMarkerIcon = L.divIcon({
+let greenMarkerIcon = L.divIcon({
   className: 'green-marker'
 });
-function markVisit(pointId) {
-  console.log(pointId);
+if (!localStorage.coordinates) {
+  localStorage.setItem("coordinates", JSON.stringify(_coordinates.coordinates));
 }
+let storageCoordinates = JSON.parse(localStorage.getItem("coordinates"));
+storageCoordinates.forEach(coordinate => {
+  if (coordinate.visited) {
+    $(`#list-visited-house`).append(`<li class="list-group-item">${coordinate.address}, ${coordinate.kec_desa}</li>`);
+  }
+});
 _coordinates.coordinates.forEach((point, i) => {
-  testmarker[point.id] = L.marker(point, {
+  markers[point.id] = L.marker(point, {
     icon: blueMarkerIcon
   }).addTo(map);
-  testmarker[point.id].on("click", function (e) {
-    e.target.setIcon(greenMarkerIcon);
+  var popup = markers[point.id].bindPopup(`<p>${point.address}, ${point.kec_desa}</p>
+    <button id="btn-${point.id}" "type="button" class="btn ${point.visited ? "btn-warning" : "btn-primary"}">${point.visited ? "Unvisit" : "Visit"}</button>`).addTo(map);
+  markers[point.id].on("click", function (e) {
+    popup.openPopup();
 
-    // var popup = L.popup()
-    // var container = L.DomUtil.create('div')
-    // var visitBtn = L.DomUtil.create('button', container)
-
-    // L.DomEvent.on(visitBtn, 'click', () => {
-    //   markVisit(point.id)
-    //   alert('mark visit')
-    // })
-
-    // e.target.bindPopup(popup).openPopup()
-
-    e.target.bindPopup(`<p>${point.address}, ${point.kec_desa}</p>
-      <button id="btn-${point.id}" "type="button" class="btn ${point.visited ? "btn-warning" : "btn-primary"}">${point.visited ? "Unvisit" : "Visit"}</button>`).openPopup();
+    // if visit button clicked, change the state to visited/visited and update the localstorage
     $(`#btn-${point.id}`).on("click", function () {
-      alert("test");
+      let storageCoordinates = localStorage.getItem("coordinates");
+      let parsedCoordinates = JSON.parse(storageCoordinates);
+      parsedCoordinates[point.id].visited = !parsedCoordinates[point.id].visited;
+      localStorage.setItem("coordinates", JSON.stringify(parsedCoordinates));
+      let visitedCoordinates = parsedCoordinates.filter(e => e.visited == true);
+      $(`#list-visited-house`).empty();
+      visitedCoordinates.forEach(e => {
+        $(`#list-visited-house`).append(`<li class="list-group-item">${e.address}, ${e.kec_desa}</li>`);
+      });
+      e.target.setIcon(parsedCoordinates[point.id].visited ? greenMarkerIcon : blueMarkerIcon);
+      e.target.closePopup();
+      markers[point.id]._popup.setContent(`<p>${point.address}, ${point.kec_desa}</p>
+        <button id="btn-${point.id}" "type="button" class="btn ${parsedCoordinates[point.id].visited ? "btn-warning" : "btn-primary"}">${parsedCoordinates[point.id].visited ? "Unvisit" : "Visit"}</button>`);
     });
   });
 });
@@ -10969,6 +10971,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.coordinates = void 0;
 const coordinates = [{
+  id: 0,
+  lat: -7.25406986195594,
+  lng: 112.724434174597,
+  address: "TEMBOK DUKUH IV/14 SURABAYA",
+  kec_desa: "BUBUTAN, TEMBOK DUKUH",
+  visited: false
+}, {
   id: 1,
   lat: -7.233941,
   lng: 112.7268541,
@@ -13046,13 +13055,6 @@ const coordinates = [{
   lng: 112.679653333333,
   address: "BABATAN",
   kec_desa: "WIYUNG, BABATAN",
-  visited: false
-}, {
-  id: 298,
-  lat: -7.25406986195594,
-  lng: 112.724434174597,
-  address: "TEMBOK DUKUH IV/14 SURABAYA",
-  kec_desa: "BUBUTAN, TEMBOK DUKUH",
   visited: false
 }];
 exports.coordinates = coordinates;

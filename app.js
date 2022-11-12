@@ -10,38 +10,54 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-let testmarker = [];
-var plainMarkerIcon = new L.icon({
-  iconUrl: "./resources/icons/marker-plain.png",
-});
-var redMarkerIcon = new L.icon({
-  iconUrl: "./resources/icons/marker-red.png",
-});
+let markers = [];
 
-var blueMarkerIcon = L.divIcon({className: 'blue-marker'});
-var greenMarkerIcon = L.divIcon({className: 'green-marker'});
+let blueMarkerIcon = L.divIcon({className: 'blue-marker'});
+let greenMarkerIcon = L.divIcon({className: 'green-marker'});
 
-function markVisit(pointId) {
-  console.log(pointId)
+if (!localStorage.coordinates) {
+  localStorage.setItem("coordinates", JSON.stringify(coordinates));
+}
+
+let storageCoordinates = JSON.parse(localStorage.getItem("coordinates"));
+storageCoordinates.forEach((coordinate) => {
+  if(coordinate.visited) {
+    $(`#list-visited-house`).append(`<li class="list-group-item">${coordinate.address}, ${coordinate.kec_desa}</li>`)
   }
+})
 
 coordinates.forEach((point, i) => {
-  testmarker[point.id] = L.marker(point, {icon: blueMarkerIcon}).addTo(map);
-  testmarker[point.id].on("click", function (e) {
-    e.target.setIcon(greenMarkerIcon);
+  markers[point.id] = L.marker(point, {icon: blueMarkerIcon}).addTo(map);
+  var popup = markers[point.id].bindPopup(
+    `<p>${point.address}, ${point.kec_desa}</p>
+    <button id="btn-${point.id}" "type="button" class="btn ${point.visited ? "btn-warning" : "btn-primary"}">${point.visited ? "Unvisit" : "Visit"}</button>`
+  ).addTo(map);
 
-    e.target.bindPopup(
-      `<p>${point.address}, ${point.kec_desa}</p>
-      <button id="btn-${point.id}" "type="button" class="btn ${point.visited ? "btn-warning" : "btn-primary"}">${point.visited ? "Unvisit" : "Visit"}</button>`
-    ).openPopup();
+  markers[point.id].on("click", function (e) {
+    popup.openPopup();
 
+    // if visit button clicked, change the state to visited/visited and update the localstorage
     $(`#btn-${point.id}`).on("click", function () {
-      alert("test");
+      let storageCoordinates = localStorage.getItem("coordinates");
+      let parsedCoordinates = JSON.parse(storageCoordinates);
+      parsedCoordinates[point.id].visited = !parsedCoordinates[point.id].visited;
+      localStorage.setItem("coordinates", JSON.stringify(parsedCoordinates));
+
+      let visitedCoordinates = parsedCoordinates.filter((e) => e.visited == true)
+      $(`#list-visited-house`).empty()
+      visitedCoordinates.forEach(e => {
+        $(`#list-visited-house`).append(`<li class="list-group-item">${e.address}, ${e.kec_desa}</li>`)
+      })
+
+      e.target.setIcon(parsedCoordinates[point.id].visited ? greenMarkerIcon : blueMarkerIcon);
+
+      e.target.closePopup();
+      markers[point.id]._popup.setContent(
+        `<p>${point.address}, ${point.kec_desa}</p>
+        <button id="btn-${point.id}" "type="button" class="btn ${parsedCoordinates[point.id].visited ? "btn-warning" : "btn-primary"}">${parsedCoordinates[point.id].visited ? "Unvisit" : "Visit"}</button>`
+      )
     })
   });
 });
-
-  
-
 
 

@@ -1,4 +1,5 @@
 export const coordinates = [
+{id:0, lat:-7.25406986195594, lng: 112.724434174597, address:"TEMBOK DUKUH IV/14 SURABAYA", kec_desa:"BUBUTAN, TEMBOK DUKUH", visited: false},
 {id:1, lat:-7.233941, lng: 112.7268541, address:"GRESIK PPI LANGGAR 16", kec_desa:"KREMBANGAN, KEMAYORAN", visited: false},
 {id:2, lat:-7.2718232, lng: 112.7618757, address:"WONOSARI 3/24", kec_desa:"SEMAMPIR, PEGIRIAN", visited: false},
 {id:3, lat:-7.26833773, lng: 112.76890883, address:"MOJOKLANGGRU LOR 80", kec_desa:"GUBENG, MOJO", visited: false},
@@ -296,5 +297,4 @@ export const coordinates = [
 {id:295, lat:-7.273985, lng: 112.728838333333, address:"TEMPEL SUKOREJO 5/10-A", kec_desa:"TEGALSARI, WONOREJO", visited: false},
 {id:296, lat:-7.3133579, lng: 112.7124192, address:"BIBIS KARAH III/8", kec_desa:"JAMBANGAN, KARAH", visited: false},
 {id:297, lat:-7.30911, lng: 112.679653333333, address:"BABATAN", kec_desa:"WIYUNG, BABATAN", visited: false},
-{id:298, lat:-7.25406986195594, lng: 112.724434174597, address:"TEMBOK DUKUH IV/14 SURABAYA", kec_desa:"BUBUTAN, TEMBOK DUKUH", visited: false},
 ];
