@@ -1,4 +1,4 @@
-# Rumah Surabaya
+# Griya Surabaya
 
 ## How to run
 
