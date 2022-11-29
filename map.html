@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pintu Surabaya</title>
+    <title>Rumah Surabaya</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,13 +21,19 @@
         integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
 
     <link rel="stylesheet" href="./resources/css/style.css">
+
+    <!-- CSS and JS files for Search Box -->
+    <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet/0.0.1-beta.5/esri-leaflet.js"></script>
+    <script src="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
+
 </head>
 <body>
     <!-- Navbar -->
     <section class="header">
         <div class="container">
             <nav>
-                <div class="logo"><h1>Pintu Surabaya</h1></div>
+                <div class="logo"><h1>Rumah Surabaya</h1></div>
                 <div class="navbar">
                     <ul>
                         <li><a href="index.html">Home</a></li>
@@ -43,7 +49,11 @@
         <div id="str" class="hero-content text-center"></div>
       </div>
 
-
+      <div class="container">
+        <div class="mx-auto text-center">
+        <button id="focus-surabaya" type="button" class="btn btn-primary">Focus to Surabaya</button>
+      </div>
+      </div>
     <!--Map-->
     <div class="container" style="margin-top:50px;">
 
@@ -52,7 +62,10 @@
 
     <!-- List visited house -->
     <div class="container mt-5">
-        <h2>Visited House</h2>
+        <div class="d-flex justify-content-between">
+            <h2>Visited House</h2>
+            <p><span id="text-visited-house">0</span> visited house</p>
+        </div>
         <div class="card">
             <ul id="list-visited-house" class="list-group list-group-flush">
               <!-- updated list in app.js -->
